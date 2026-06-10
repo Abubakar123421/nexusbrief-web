@@ -40,44 +40,67 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   };
 
   return (
-    <aside className="w-56 bg-[#F8F7F4] border-r border-[#E0DDD8] flex flex-col py-6 px-3 min-h-screen">
-      {/* Section label */}
-      <p className="font-montserrat text-[9px] uppercase tracking-[0.2em] text-[#8A8A8A] px-3 mb-3 select-none">
-        Menu
-      </p>
+    <aside className="w-64 bg-[#FDFCFA] border-r border-ink/10 flex flex-col min-h-screen relative shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+      {/* Decorative texture */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.3] mix-blend-multiply z-0"
+        style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+      />
 
-      {/* Nav items */}
-      <nav className="flex flex-col gap-0.5">
-        {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
-          const isActive = href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Brand Header */}
+        <div className="py-8 px-8 border-b border-ink/10 flex flex-col items-center mb-6">
+          <div className="w-12 h-12 bg-ink text-white flex items-center justify-center font-playfair italic text-2xl mb-3 shadow-md">
+            N
+          </div>
+          <h2 className="font-playfair font-black tracking-tight text-ink text-xl">
+            NexusBrief
+          </h2>
+          <p className="font-montserrat text-[8px] uppercase tracking-[0.3em] text-ink/50 mt-1 font-bold">
+            Daily Edition
+          </p>
+        </div>
 
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={[
-                'flex items-center gap-3 px-3 py-2.5 font-montserrat text-[13px] transition-colors cursor-pointer',
-                isActive
-                  ? 'text-[#0A0A0A] bg-[#ECEAE5] font-medium border-l-2 border-[#0A0A0A]'
-                  : 'text-[#8A8A8A] hover:text-[#0A0A0A] hover:bg-[#ECEAE5]',
-              ].join(' ')}
+        {/* Section label */}
+        <p className="font-montserrat text-[10px] uppercase tracking-[0.25em] text-ink/40 px-8 mb-4 font-bold select-none text-center">
+          Index
+        </p>
+
+        {/* Nav items */}
+        <nav className="flex flex-col gap-1 px-4">
+          {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
+            const isActive = href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={[
+                  'flex items-center gap-4 px-4 py-3 font-montserrat text-[11px] uppercase tracking-[0.1em] transition-all cursor-pointer group',
+                  isActive
+                    ? 'text-ink font-bold bg-ink/5'
+                    : 'text-ink/60 hover:text-ink hover:bg-ink/5 font-semibold',
+                ].join(' ')}
+              >
+                <Icon size={16} strokeWidth={isActive ? 2 : 1.5} className={isActive ? "text-ink" : "text-ink/50 group-hover:text-ink"} />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Logout at bottom */}
+        <div className="mt-auto px-4 pb-8">
+          <div className="border-t border-ink/10 pt-4">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 font-montserrat text-[10px] uppercase tracking-[0.15em] font-bold text-ink/60 hover:text-ink border border-transparent hover:border-ink/20 hover:bg-ink/5 transition-all cursor-pointer"
             >
-              <Icon size={16} strokeWidth={1.8} />
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* Logout at bottom */}
-      <div className="mt-auto">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 font-montserrat text-[13px] text-[#8C1F1F] hover:text-[#8C1F1F] hover:bg-[#F5EDED] transition-colors cursor-pointer"
-        >
-          <LogOut size={16} strokeWidth={1.8} />
-          Logout
-        </button>
+              <LogOut size={14} strokeWidth={2} />
+              Sign Out
+            </button>
+          </div>
+        </div>
       </div>
     </aside>
   );
