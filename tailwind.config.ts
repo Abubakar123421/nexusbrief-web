@@ -48,6 +48,7 @@ const config: Config = {
       },
       animation: {
         'scrollLine': 'scrollLine 2s ease-in-out infinite',
+        'scrollHorizontal': 'scrollHorizontal 60s linear infinite',
         'fadeInUp':   'fadeInUp 0.7s ease forwards',
         'fadeIn':     'fadeIn 0.5s ease forwards',
         'shimmer':    'shimmer 2s infinite',
@@ -59,6 +60,10 @@ const config: Config = {
         scrollLine: {
           '0%':   { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(100%)' },
+        },
+        scrollHorizontal: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
         fadeInUp: {
           '0%':   { opacity: '0', transform: 'translateY(24px)' },

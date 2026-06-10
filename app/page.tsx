@@ -89,73 +89,122 @@ export default function LandingPage() {
       <SampleDigest />
 
       {/* ── CTA ───────────────────────────────────────────────── */}
-      <section className="bg-surface py-32 px-6 border-t border-border">
-        <div className="max-w-content mx-auto text-center">
-          <p className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink-muted mb-6">
+      <section className="relative bg-[#F8F7F4] pt-32 pb-48 px-6 border-t border-border overflow-hidden">
+        {/* Subtle Paper Texture Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.35] mix-blend-multiply z-0"
+          style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+        />
+        
+        {/* Gentle Ambient Lighting Gradient */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/60 via-transparent to-transparent opacity-80 pointer-events-none blur-3xl z-0" />
+
+        {/* Editorial Micro-elements */}
+        <div className="absolute top-8 left-8 hidden md:flex flex-col gap-1 z-10">
+          <div className="w-16 h-px bg-ink/20" />
+          <span className="font-montserrat text-[8px] uppercase tracking-[0.3em] text-ink/40">Edition: {new Date().getFullYear()}</span>
+        </div>
+        <div className="absolute top-8 right-8 hidden md:block z-10">
+          <div className="w-8 h-8 rounded-full border border-ink/10 flex items-center justify-center">
+            <span className="font-playfair italic text-ink/40 text-[12px]">N</span>
+          </div>
+        </div>
+
+        {/* Slow-moving newswire accent */}
+        <div className="absolute left-0 w-full overflow-hidden top-24 opacity-40 z-0">
+          <div className="flex w-[200%] animate-scrollHorizontal">
+            {[...Array(6)].map((_, i) => (
+              <span key={i} className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink/20 whitespace-nowrap px-8">
+                • THE WORLD'S BEST JOURNALISM CURATED FOR YOU • INTELLECTUAL PURSUITS 
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative max-w-content mx-auto text-center z-10">
+          <p className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink/50 mb-6 font-semibold">
             Get Started
           </p>
           <h2
-            className="font-playfair font-black text-ink leading-[1.05] max-w-3xl mx-auto"
+            className="font-playfair font-black text-ink leading-[1.05] max-w-3xl mx-auto drop-shadow-sm"
             style={{ fontSize: 'clamp(38px, 5vw, 68px)' }}
           >
             Your digest,
             <br />
-            <em className="italic">starts today.</em>
+            <em className="italic font-light text-ink/80">starts today.</em>
           </h2>
-          <p className="font-garamond text-[18px] text-ink-secondary mt-6 mb-12 max-w-lg mx-auto leading-relaxed">
+          <p className="font-garamond text-[19px] text-ink/60 mt-8 mb-12 max-w-md mx-auto leading-relaxed">
             Free to use. Takes 60 seconds to set up. Your first digest is waiting.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Link
               href="/auth/register"
-              className="font-montserrat text-[12px] uppercase tracking-[0.15em] font-semibold bg-ink text-white px-12 py-5 hover:bg-transparent hover:text-ink border border-ink transition-all duration-200"
+              className="group relative font-montserrat text-[11px] uppercase tracking-[0.2em] font-semibold bg-ink text-white px-12 py-5 border border-ink transition-all duration-500 hover:bg-[#1A1A1A] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 overflow-hidden"
             >
-              Create Free Account
+              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+              <span className="relative z-10">Create Free Account</span>
             </Link>
             <Link
               href="/auth/login"
-              className="font-montserrat text-[12px] uppercase tracking-[0.15em] text-ink-muted hover:text-ink transition-colors"
+              className="group font-montserrat text-[11px] uppercase tracking-[0.15em] text-ink/60 hover:text-ink transition-colors duration-300 flex items-center gap-2"
             >
-              Already have an account →
+              Already have an account 
+              <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
             </Link>
           </div>
         </div>
+        
+        {/* Soft transition into footer */}
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-b from-transparent to-[#050505] z-20 pointer-events-none" />
       </section>
 
       {/* ── FOOTER ────────────────────────────────────────────── */}
-      <footer className="bg-ink py-14 px-6 border-t border-white/10">
-        <div className="max-w-content mx-auto flex flex-col md:flex-row items-start justify-between gap-8">
-          <div>
-            <span className="font-playfair text-white text-xl font-bold">NexusBrief</span>
-            <p className="font-garamond text-white/40 text-[14px] mt-2 italic">
-              Your Daily News Digest
+      <footer className="relative bg-[#050505] pt-12 pb-14 px-6 border-t border-white/5 overflow-hidden">
+        {/* Footer Ambient Background details */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.04] via-transparent to-transparent pointer-events-none" />
+        
+        <div className="relative max-w-content mx-auto flex flex-col md:flex-row items-start justify-between gap-12 z-10">
+          <div className="relative">
+            <span className="font-playfair text-white/90 text-2xl font-bold tracking-tight">NexusBrief</span>
+            <p className="font-garamond text-white/40 text-[16px] mt-2 italic">
+              Your Daily News Digest.
             </p>
+            <div className="w-12 h-px bg-white/10 mt-6" />
           </div>
-          <div className="flex gap-10">
+          <div className="flex gap-16">
             <div>
-              <p className="font-montserrat text-[9px] uppercase tracking-widest text-white/30 mb-3">
+              <p className="font-montserrat text-[9px] uppercase tracking-[0.25em] text-white/30 mb-5 font-semibold">
                 Product
               </p>
               {['Features', 'Pricing', 'Changelog'].map((l) => (
-                <p key={l} className="font-montserrat text-[13px] text-white/50 hover:text-white cursor-pointer transition-colors mb-1.5">
+                <p key={l} className="font-garamond text-[15px] text-white/50 hover:text-white cursor-pointer transition-colors duration-300 mb-2.5">
                   {l}
                 </p>
               ))}
             </div>
             <div>
-              <p className="font-montserrat text-[9px] uppercase tracking-widest text-white/30 mb-3">
+              <p className="font-montserrat text-[9px] uppercase tracking-[0.25em] text-white/30 mb-5 font-semibold">
                 Account
               </p>
               {[['Sign In', '/auth/login'], ['Register', '/auth/register']].map(([l, h]) => (
-                <Link key={l} href={h} className="block font-montserrat text-[13px] text-white/50 hover:text-white transition-colors mb-1.5">
+                <Link key={l} href={h} className="block font-garamond text-[15px] text-white/50 hover:text-white transition-colors duration-300 mb-2.5">
                   {l}
                 </Link>
               ))}
             </div>
           </div>
-          <p className="font-montserrat text-[11px] text-white/25 mt-auto">
+        </div>
+        
+        <div className="relative max-w-content mx-auto mt-20 pt-8 border-t border-white/10 flex items-center justify-between z-10">
+          <p className="font-montserrat text-[10px] uppercase tracking-[0.2em] text-white/20">
             © {new Date().getFullYear()} NexusBrief
           </p>
+          <div className="flex gap-4">
+            {/* Tiny decoration dots */}
+            <div className="w-[3px] h-[3px] rounded-full bg-white/20" />
+            <div className="w-[3px] h-[3px] rounded-full bg-white/10" />
+            <div className="w-[3px] h-[3px] rounded-full bg-white/5" />
+          </div>
         </div>
       </footer>
 
