@@ -39,83 +39,91 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   const readTime = estimateReadTime(item.summary);
 
   return (
-    <article className="border border-[#E0DDD8] bg-white p-6 transition-shadow hover:shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
-      {/* Header row */}
-      <div className="flex items-center gap-3 mb-4">
-        <span className="font-montserrat text-[10px] font-bold uppercase tracking-widest border border-[#0A0A0A] px-2 py-0.5 text-[#0A0A0A]">
-          #{rank}
-        </span>
-        {item.is_exported && (
-          <span className="font-montserrat text-[10px] uppercase tracking-widest text-[#1A5C2A] flex items-center gap-1">
-            <span>✓</span> Scheduled
-          </span>
-        )}
-      </div>
+    <article className="border border-ink/20 bg-[#FDFCFA] p-8 transition-all hover:shadow-xl hover:-translate-y-1 relative group">
+      {/* Decorative corner accents */}
+      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-ink/40" />
+      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-ink/40" />
+      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-ink/40" />
+      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-ink/40" />
+      
+      {/* Paper texture overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.4] mix-blend-multiply z-0"
+        style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+      />
 
-      {/* Content area */}
-      <div className="flex gap-5">
-        {/* Left: text */}
-        <div className="flex-1 min-w-0">
+      <div className="relative z-10 flex flex-col md:flex-row gap-8">
+        {/* Left: Content */}
+        <div className="flex-1 min-w-0 flex flex-col">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-montserrat text-[11px] font-bold uppercase tracking-[0.2em] border-b border-ink text-ink pb-0.5">
+              Rank No. {rank}
+            </span>
+            {item.is_exported && (
+              <span className="font-montserrat text-[9px] uppercase tracking-widest text-ink/50 flex items-center gap-1 border border-ink/10 px-2 py-0.5">
+                <span>✓</span> Syndicated
+              </span>
+            )}
+          </div>
+
           <a
             href={item.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block font-playfair italic text-[22px] font-medium leading-snug text-[#0A0A0A] hover:underline cursor-pointer mb-1"
+            className="block font-playfair italic text-3xl font-bold leading-tight text-ink hover:text-ink/70 cursor-pointer mb-4 decoration-ink/30 hover:decoration-ink/70 underline-offset-4"
           >
             {item.headline}
           </a>
 
-          <div className="border-b border-[#E0DDD8]/60 my-3" />
+          <div className="w-12 border-t-2 border-ink mb-4" />
 
-          <p className="font-garamond text-[16px] text-[#3A3A3A] leading-relaxed line-clamp-3">
+          <p className="font-garamond text-[19px] text-ink/80 leading-relaxed line-clamp-3 mb-4">
             {item.summary}
           </p>
+
+          {/* Meta row */}
+          <div className="mt-auto font-montserrat text-[10px] uppercase tracking-widest text-ink/50 flex items-center gap-3 font-semibold">
+            <span>{relativeTime}</span>
+            <span className="text-ink/30">&bull;</span>
+            <span>{readTime} MIN READ</span>
+          </div>
         </div>
 
-        {/* Right: thumbnail */}
+        {/* Right: Big Thumbnail with slight curve */}
         {item.thumbnail_url && (
-          <div className="flex-shrink-0">
-            <div className="relative w-[140px] h-[95px] overflow-hidden">
+          <div className="flex-shrink-0 w-full md:w-[280px]">
+            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-ink/10 group-hover:border-ink/30 transition-colors shadow-sm">
               <Image
                 src={item.thumbnail_url}
                 alt={item.headline}
                 fill
-                className="object-cover"
-                sizes="140px"
+                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out grayscale-[0.2]"
+                sizes="(max-width: 768px) 100vw, 280px"
               />
             </div>
           </div>
         )}
       </div>
 
-      {/* Meta row */}
-      <div className="mt-3 font-montserrat text-[11px] text-[#8A8A8A] flex items-center gap-3">
-        <span>{relativeTime}</span>
-        <span>&middot;</span>
-        <span>{readTime} min read</span>
-      </div>
-
       {/* Action bar */}
-      <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#E0DDD8]">
-        <Button variant="ghost" size="sm" onClick={onLike} className="flex items-center gap-1.5 !px-2 !py-1.5">
-          <ThumbsUp size={14} strokeWidth={1.8} />
-          <span className="sr-only">Like</span>
+      <div className="relative z-10 flex items-center gap-4 mt-6 pt-6 border-t border-ink/10">
+        <Button variant="ghost" size="sm" onClick={onLike} className="group/btn flex items-center gap-2 !px-3 !py-2 hover:bg-ink/5 rounded-none">
+          <ThumbsUp size={16} strokeWidth={1.5} className="text-ink/70 group-hover/btn:text-ink" />
         </Button>
 
-        <Button variant="ghost" size="sm" onClick={onDislike} className="flex items-center gap-1.5 !px-2 !py-1.5">
-          <ThumbsDown size={14} strokeWidth={1.8} />
-          <span className="sr-only">Dislike</span>
+        <Button variant="ghost" size="sm" onClick={onDislike} className="group/btn flex items-center gap-2 !px-3 !py-2 hover:bg-ink/5 rounded-none">
+          <ThumbsDown size={16} strokeWidth={1.5} className="text-ink/70 group-hover/btn:text-ink" />
         </Button>
 
         {showBookmark && (
-          <Button variant="ghost" size="sm" onClick={onBookmark} className="flex items-center gap-1.5 !px-2 !py-1.5">
+          <Button variant="ghost" size="sm" onClick={onBookmark} className="group/btn flex items-center gap-2 !px-3 !py-2 hover:bg-ink/5 rounded-none">
             {item.is_bookmarked ? (
-              <BookmarkCheck size={14} strokeWidth={1.8} className="text-[#0A0A0A]" />
+              <BookmarkCheck size={16} strokeWidth={1.5} className="text-ink" />
             ) : (
-              <Bookmark size={14} strokeWidth={1.8} />
+              <Bookmark size={16} strokeWidth={1.5} className="text-ink/70 group-hover/btn:text-ink" />
             )}
-            <span className="font-montserrat text-[10px] uppercase tracking-wider">
-              {item.is_bookmarked ? 'Saved' : 'Read Later'}
+            <span className="font-montserrat text-[10px] uppercase tracking-[0.15em] font-semibold text-ink/70 group-hover/btn:text-ink">
+              {item.is_bookmarked ? 'Saved to Archive' : 'Archive'}
             </span>
           </Button>
         )}
@@ -125,10 +133,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             href={item.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-transparent text-[#0A0A0A] border border-[#E0DDD8] hover:bg-[#0A0A0A] hover:text-white hover:border-[#0A0A0A] px-4 py-2 font-montserrat text-[10px] font-semibold uppercase tracking-[0.1em] transition-all duration-200"
+            className="inline-flex items-center gap-2 bg-transparent text-ink border border-ink hover:bg-ink hover:text-white px-5 py-2.5 font-montserrat text-[10px] font-bold uppercase tracking-[0.15em] transition-colors"
           >
-            <ExternalLink size={12} strokeWidth={1.8} />
-            Read Article
+            Read Full <ExternalLink size={12} strokeWidth={2} />
           </a>
         </div>
       </div>

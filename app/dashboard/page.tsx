@@ -43,50 +43,12 @@ interface CurrentUser {
 
 function SkeletonCard() {
   return (
-    <div
-      className="animate-pulse"
-      style={{
-        border: '1px solid #E0DDD8',
-        padding: '1.5rem',
-        marginBottom: '1.5rem',
-        backgroundColor: '#F8F7F4',
-      }}
-    >
-      <div
-        style={{
-          height: '12px',
-          width: '80px',
-          backgroundColor: '#E0DDD8',
-          marginBottom: '0.75rem',
-          borderRadius: '2px',
-        }}
-      />
-      <div
-        style={{
-          height: '24px',
-          width: '70%',
-          backgroundColor: '#E0DDD8',
-          marginBottom: '0.5rem',
-          borderRadius: '2px',
-        }}
-      />
-      <div
-        style={{
-          height: '14px',
-          width: '90%',
-          backgroundColor: '#E0DDD8',
-          marginBottom: '0.375rem',
-          borderRadius: '2px',
-        }}
-      />
-      <div
-        style={{
-          height: '14px',
-          width: '75%',
-          backgroundColor: '#E0DDD8',
-          borderRadius: '2px',
-        }}
-      />
+    <div className="border border-ink/10 p-8 mb-6 bg-surface relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite] pointer-events-none" />
+      <div className="h-3 w-20 bg-ink/10 mb-4 rounded-sm" />
+      <div className="h-8 w-3/4 bg-ink/10 mb-4 rounded-sm" />
+      <div className="h-4 w-11/12 bg-ink/5 mb-2 rounded-sm" />
+      <div className="h-4 w-4/5 bg-ink/5 rounded-sm" />
     </div>
   );
 }
@@ -105,73 +67,30 @@ function LoadingState() {
 
 function EmptyState({ onGenerate, isGenerating }: { onGenerate: () => void; isGenerating: boolean }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: '5rem',
-        paddingBottom: '5rem',
-        textAlign: 'center',
-      }}
-    >
-      {/* Decorative rule */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          marginBottom: '2rem',
-          width: '100%',
-          maxWidth: '320px',
-        }}
-      >
-        <div style={{ flex: 1, height: '1px', backgroundColor: '#E0DDD8' }} />
-        <span
-          className="font-montserrat uppercase"
-          style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#8A8A8A' }}
-        >
-          ✦
-        </span>
-        <div style={{ flex: 1, height: '1px', backgroundColor: '#E0DDD8' }} />
+    <div className="flex flex-col items-center justify-center py-32 text-center relative overflow-hidden bg-surface border border-ink/10 mx-auto max-w-3xl mt-12 px-6">
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.25] mix-blend-multiply z-0"
+        style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+      />
+      
+      {/* Decorative center icon or watermark */}
+      <div className="relative z-10 w-16 h-16 border border-ink/20 rounded-full flex items-center justify-center mb-8 bg-white/50 backdrop-blur-sm">
+        <span className="font-playfair italic text-3xl text-ink/40">N</span>
       </div>
 
-      <p
-        className="font-playfair italic"
-        style={{ fontSize: '32px', color: '#3D3D3D', marginBottom: '0.75rem', lineHeight: 1.25 }}
-      >
-        No digest yet.
+      <p className="relative z-10 font-playfair font-black text-4xl text-ink tracking-tight mb-4">
+        The press is waiting.
       </p>
-      <p
-        className="font-garamond"
-        style={{ fontSize: '16px', color: '#8A8A8A', marginBottom: '2rem' }}
-      >
-        Generate your first personalized briefing.
+      <p className="relative z-10 font-garamond text-[19px] text-ink/60 mb-10 max-w-md mx-auto leading-relaxed">
+        Your personalized editorial briefing has not been generated yet. Instruct the newsroom to compile today's edition.
       </p>
+      
       <button
-        id="dashboard-empty-generate-btn"
         onClick={onGenerate}
         disabled={isGenerating}
-        className="font-montserrat uppercase font-semibold flex items-center gap-2 transition-colors"
-        style={{
-          backgroundColor: '#0A0A0A',
-          color: '#FFF',
-          fontSize: '12px',
-          letterSpacing: '0.15em',
-          padding: '0.875rem 2rem',
-          border: 'none',
-          cursor: isGenerating ? 'not-allowed' : 'pointer',
-          opacity: isGenerating ? 0.7 : 1,
-        }}
+        className="relative z-10 font-montserrat uppercase font-semibold flex items-center gap-3 transition-all bg-ink text-white text-[11px] tracking-[0.2em] px-10 py-4 border border-ink hover:bg-[#1A1A1A] hover:-translate-y-1 hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed"
       >
-        {isGenerating ? (
-          <>
-            <SpinnerIcon /> Generating…
-          </>
-        ) : (
-          '⚡ Generate Digest'
-        )}
+        {isGenerating ? <><SpinnerIcon /> Typesetting Edition...</> : 'Instruct Newsroom'}
       </button>
     </div>
   );
@@ -203,16 +122,13 @@ function SpinnerIcon() {
 function StatusBadge({ isViewed }: { isViewed: boolean }) {
   return (
     <span
-      className="font-montserrat uppercase"
-      style={{
-        fontSize: '9px',
-        letterSpacing: '0.15em',
-        padding: '0.2rem 0.5rem',
-        backgroundColor: isViewed ? '#E0DDD8' : '#0A0A0A',
-        color: isViewed ? '#8A8A8A' : '#FFF',
-      }}
+      className={`font-montserrat text-[9px] uppercase tracking-[0.2em] px-3 py-1.5 font-semibold ${
+        isViewed 
+          ? 'border border-ink/20 text-ink/50 bg-transparent' 
+          : 'bg-ink text-white border border-ink'
+      }`}
     >
-      {isViewed ? 'Viewed' : 'New'}
+      {isViewed ? 'Viewed' : 'New Edition'}
     </span>
   );
 }
@@ -399,68 +315,48 @@ export default function DashboardPage() {
   return (
     <main className="flex-1 overflow-y-auto" style={{ minWidth: 0 }}>
       {/* ── Top section ──────────────────────────────────────────────────── */}
-      <div
-        style={{
-          padding: '1.75rem 2rem',
-          borderBottom: '1px solid #E0DDD8',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1rem',
-          }}
-        >
+      <div className="px-8 md:px-16 py-12 border-b border-ink/10 relative overflow-hidden bg-[#F8F7F4]">
+        {/* Paper texture */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.35] mix-blend-multiply z-0"
+          style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+        />
+        
+        {/* Banner Graphic */}
+        <div className="w-full h-48 md:h-64 mb-12 relative border border-ink/20 overflow-hidden group">
+          <img 
+            src="/dashboard-banner.png" 
+            alt="Editorial Engraving" 
+            className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-multiply grayscale group-hover:scale-105 transition-transform duration-1000"
+          />
+          <div className="absolute inset-0 bg-ink/5 mix-blend-overlay" />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-[#F8F7F4]/90 backdrop-blur-sm px-10 py-4 border border-ink/20 shadow-sm">
+              <span className="font-playfair italic text-ink text-2xl md:text-3xl tracking-tight">Today's Edition</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
           {/* Welcome */}
           <div>
-            <p
-              className="font-montserrat uppercase"
-              style={{ fontSize: '10px', letterSpacing: '0.25em', color: '#8A8A8A' }}
-            >
-              Welcome back
+            <p className="font-montserrat text-[10px] uppercase tracking-[0.25em] text-ink/50 mb-2 font-semibold">
+              Personalized for
             </p>
-            <h1
-              className="font-playfair font-black"
-              style={{ fontSize: '32px', color: '#0A0A0A', marginTop: '0.25rem', lineHeight: 1.1 }}
-            >
+            <h1 className="font-playfair font-black text-ink text-4xl md:text-5xl leading-[1.1] tracking-tight">
               {user?.name ?? 'Reader'}
             </h1>
           </div>
 
           {/* Action buttons */}
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div className="flex gap-4 items-center">
             {/* Refresh */}
             <button
-              id="dashboard-refresh-btn"
               onClick={onRefresh}
               disabled={isLoading}
-              title="Refresh digest"
-              className="font-montserrat uppercase transition-colors"
-              style={{
-                border: '1px solid #E0DDD8',
-                backgroundColor: 'transparent',
-                color: '#3D3D3D',
-                fontSize: '11px',
-                letterSpacing: '0.12em',
-                padding: '0.625rem 1rem',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-              }}
+              className="group font-montserrat uppercase text-[10px] tracking-[0.2em] px-5 py-3.5 border border-ink/20 hover:border-ink/60 text-ink/70 hover:text-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-transparent font-semibold"
             >
-              {/* Refresh icon */}
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:rotate-180 transition-transform duration-500">
                 <polyline points="23 4 23 10 17 10" />
                 <polyline points="1 20 1 14 7 14" />
                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
@@ -470,27 +366,14 @@ export default function DashboardPage() {
 
             {/* Generate */}
             <button
-              id="dashboard-generate-btn"
               onClick={onGenerate}
               disabled={isGenerating}
-              className="font-montserrat uppercase font-semibold flex items-center gap-2 transition-colors"
-              style={{
-                backgroundColor: '#0A0A0A',
-                color: '#FFF',
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                padding: '0.75rem 1.5rem',
-                border: 'none',
-                cursor: isGenerating ? 'not-allowed' : 'pointer',
-                opacity: isGenerating ? 0.75 : 1,
-              }}
+              className="font-montserrat uppercase font-semibold text-[11px] tracking-[0.2em] bg-ink text-white px-8 py-3.5 border border-ink hover:bg-transparent hover:text-ink transition-colors disabled:opacity-75 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {isGenerating ? (
-                <>
-                  <SpinnerIcon /> Generating…
-                </>
+                <><SpinnerIcon /> Typesetting...</>
               ) : (
-                '⚡ Generate Digest'
+                'Publish Digest'
               )}
             </button>
           </div>
@@ -498,31 +381,15 @@ export default function DashboardPage() {
 
         {/* Digest meta */}
         {digest && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1.25rem',
-              marginTop: '1rem',
-              flexWrap: 'wrap',
-            }}
-          >
-            <span
-              className="font-montserrat"
-              style={{ fontSize: '11px', color: '#8A8A8A' }}
-            >
-              Generated:{' '}
-              <span style={{ color: '#3D3D3D' }}>{formatDate(digest.generated_at)}</span>
+          <div className="relative z-10 mt-8 pt-6 border-t border-ink/10 flex flex-wrap items-center gap-6">
+            <span className="font-montserrat text-[10px] uppercase tracking-[0.15em] text-ink/40 font-semibold">
+              Generated <span className="text-ink ml-1">{formatDate(digest.generated_at)}</span>
             </span>
-            <span
-              className="font-montserrat"
-              style={{ fontSize: '11px', color: '#8A8A8A' }}
-            >
-              Status:{' '}
-              <span style={{ color: '#3D3D3D', textTransform: 'uppercase' }}>
-                {digest.status}
-              </span>
+            <div className="w-1 h-1 bg-ink/20 rounded-full" />
+            <span className="font-montserrat text-[10px] uppercase tracking-[0.15em] text-ink/40 font-semibold">
+              Status <span className="text-ink ml-1 uppercase">{digest.status}</span>
             </span>
+            <div className="w-1 h-1 bg-ink/20 rounded-full" />
             <StatusBadge isViewed={digest.is_viewed} />
           </div>
         )}
@@ -542,7 +409,7 @@ export default function DashboardPage() {
       )}
 
       {/* ── Articles ──────────────────────────────────────────────────────── */}
-      <div style={{ padding: '2rem' }}>
+      <div className="px-8 md:px-16 py-12 max-w-[1200px] mx-auto bg-white min-h-screen">
         {isLoading && <LoadingState />}
 
         {!isLoading && (!digest || digest.digest_items.length === 0) && (

@@ -6,13 +6,13 @@ import Topbar from '@/components/Topbar';
 
 interface DigestItem {
   id: string;
-  headline: string;
-  item_rank: number;
+  article_title: string;
+  rank_position: number;
 }
 
 interface Digest {
   id: string;
-  created_at: string;
+  generated_at: string;
   status: string;
   is_viewed: boolean;
   digest_items: DigestItem[];
@@ -51,9 +51,9 @@ export default function HistoryPage() {
 
       const { data } = await supabase
         .from('digests')
-        .select('*, digest_items(id, headline, item_rank)')
+        .select('*, digest_items(id, article_title, rank_position)')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        .order('generated_at', { ascending: false });
 
       setDigests(data ?? []);
       setFiltered(data ?? []);
@@ -71,7 +71,7 @@ export default function HistoryPage() {
     setFiltered(
       digests.filter(
         (d) =>
-          new Date(d.created_at).toLocaleDateString().toLowerCase().includes(q) ||
+          new Date(d.generated_at).toLocaleDateString().toLowerCase().includes(q) ||
           d.status.toLowerCase().includes(q)
       )
     );
@@ -86,118 +86,112 @@ export default function HistoryPage() {
     });
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] flex flex-col">
-      <Topbar title="Digest History" />
-      <main className="flex-1 overflow-y-auto px-8 py-8 max-w-4xl mx-auto w-full">
-        {/* Page Header */}
-        <div className="mb-8">
-          <p
-            className="font-montserrat text-[10px] uppercase tracking-widest text-[#8A8A8A] mb-1"
-          >
-            DIGEST HISTORY
-          </p>
-          <h1
-            className="font-playfair font-black text-[36px] text-[#0A0A0A] leading-tight"
-          >
-            Your Archive
-          </h1>
-          <p className="font-garamond text-[#8A8A8A] text-[16px] mt-1">
-            Every digest generated for your account.
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#FDFCFA] flex flex-col">
+      <Topbar title="Digest Archive" />
+      <main className="flex-1 overflow-y-auto px-8 md:px-16 py-16 max-w-[1000px] mx-auto w-full relative">
+        {/* Paper texture */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.3] mix-blend-multiply z-0"
+          style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+        />
 
-        {/* Search */}
-        <div className="mb-6">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by date or status…"
-            className="border border-[#E0DDD8] px-4 py-3 font-garamond text-[15px] text-[#0A0A0A] placeholder-[#8A8A8A] w-full max-w-md focus:border-[#0A0A0A] focus:outline-none transition-colors bg-transparent"
-          />
-        </div>
-
-        {/* Content */}
-        {loading ? (
-          <>
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-          </>
-        ) : filtered.length === 0 ? (
-          <div className="flex items-center justify-center py-24">
-            <p className="font-playfair italic text-[22px] text-[#8A8A8A] text-center">
-              {digests.length === 0
-                ? 'No digests yet. Generate your first one.'
-                : 'No digests match your search.'}
+        <div className="relative z-10">
+          {/* Page Header */}
+          <div className="mb-16 border-b-2 border-ink pb-8 text-center md:text-left">
+            <p className="font-montserrat text-[11px] uppercase tracking-[0.25em] text-ink/50 mb-2 font-bold">
+              Edition Index
             </p>
+            <h1 className="font-playfair font-black text-5xl md:text-6xl text-ink leading-tight tracking-tight">
+              The Archive
+            </h1>
           </div>
-        ) : (
-          <div>
-            {filtered.map((digest) => {
-              const items = [...(digest.digest_items ?? [])].sort(
-                (a, b) => a.item_rank - b.item_rank
-              );
-              const visibleItems = items.slice(0, 3);
-              const extraCount = items.length - 3;
 
-              return (
-                <div
-                  key={digest.id}
-                  className="border border-[#E0DDD8] p-6 mb-4 hover:bg-[#F8F7F4] transition-colors"
-                >
-                  {/* Header row */}
-                  <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                    <h2 className="font-playfair font-bold text-[18px] text-[#0A0A0A]">
-                      {formatDate(digest.created_at)}
-                    </h2>
-                    <div className="flex items-center gap-2">
-                      {/* Status badge */}
-                      <span
-                        className="font-montserrat text-[9px] uppercase tracking-widest px-2 py-1 border border-[#E0DDD8] text-[#3D3D3D]"
-                      >
-                        {digest.status}
-                      </span>
-                      {/* Viewed / New badge */}
-                      <span
-                        className={`font-montserrat text-[9px] uppercase tracking-widest px-2 py-1 ${
-                          digest.is_viewed
-                            ? 'border border-[#E0DDD8] text-[#8A8A8A]'
-                            : 'bg-[#0A0A0A] text-[#FFFFFF]'
-                        }`}
-                      >
-                        {digest.is_viewed ? 'Viewed' : 'New'}
-                      </span>
-                      {/* Item count */}
-                      <span className="font-montserrat text-[11px] text-[#8A8A8A] ml-2">
-                        {items.length} {items.length === 1 ? 'story' : 'stories'}
-                      </span>
+          {/* Search */}
+          <div className="mb-12">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search past editions by date..."
+              className="border-b border-ink/30 px-2 py-4 font-garamond text-xl text-ink placeholder-ink/40 w-full focus:border-ink focus:outline-none transition-colors bg-transparent"
+            />
+          </div>
+
+          {/* Content */}
+          {loading ? (
+            <div className="space-y-8">
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+              <span className="font-playfair italic text-4xl text-ink/20 mb-4">N</span>
+              <p className="font-playfair italic text-2xl text-ink/50">
+                {digests.length === 0
+                  ? 'The archive is currently empty.'
+                  : 'No editions found for that search.'}
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-12">
+              {filtered.map((digest) => {
+                const items = [...(digest.digest_items ?? [])].sort(
+                  (a, b) => a.rank_position - b.rank_position
+                );
+                const visibleItems = items.slice(0, 4);
+                const extraCount = items.length - 4;
+
+                return (
+                  <div key={digest.id} className="group relative">
+                    <div className="absolute -left-6 top-0 bottom-0 w-1 bg-ink/0 group-hover:bg-ink transition-colors" />
+                    
+                    <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
+                      {/* Left Meta */}
+                      <div className="w-full md:w-48 shrink-0">
+                        <h2 className="font-playfair font-black text-2xl text-ink leading-tight mb-2">
+                          {formatDate(digest.generated_at)}
+                        </h2>
+                        <div className="flex flex-wrap gap-2 items-center">
+                          <span className="font-montserrat text-[9px] uppercase tracking-widest px-2 py-1 border border-ink/20 text-ink font-semibold">
+                            {digest.status}
+                          </span>
+                          {!digest.is_viewed && (
+                            <span className="font-montserrat text-[9px] uppercase tracking-widest px-2 py-1 bg-ink text-white font-semibold">
+                              Unread
+                            </span>
+                          )}
+                        </div>
+                        <p className="font-montserrat text-[10px] uppercase tracking-widest text-ink/50 mt-4 font-semibold">
+                          {items.length} {items.length === 1 ? 'Story' : 'Stories'}
+                        </p>
+                      </div>
+
+                      {/* Right Items */}
+                      <div className="flex-1 space-y-4 pt-1">
+                        {visibleItems.map((item) => (
+                          <div key={item.id} className="group/item">
+                            <h3 className="font-garamond text-xl text-ink leading-snug group-hover/item:text-ink/60 transition-colors">
+                              <span className="font-montserrat text-[10px] uppercase font-bold tracking-widest text-ink/40 mr-3 align-middle">
+                                No. {item.rank_position}
+                              </span>
+                              {item.article_title}
+                            </h3>
+                          </div>
+                        ))}
+                        {extraCount > 0 && (
+                          <p className="font-montserrat text-[10px] uppercase tracking-widest text-ink/40 font-bold pt-2 border-t border-ink/10 mt-4">
+                            + {extraCount} more featured {extraCount === 1 ? 'story' : 'stories'} inside
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-
-                  {/* Items list */}
-                  <div>
-                    {visibleItems.map((item, idx) => (
-                      <div
-                        key={item.id}
-                        className={`font-garamond text-[14px] text-[#3D3D3D] ${
-                          idx > 0 ? 'border-t border-[#E0DDD8]/60 pt-2 mt-2' : ''
-                        }`}
-                      >
-                        #{item.item_rank} {item.headline}
-                      </div>
-                    ))}
-                    {extraCount > 0 && (
-                      <p className="font-garamond text-[13px] text-[#8A8A8A] mt-2 italic border-t border-[#E0DDD8]/60 pt-2">
-                        + {extraCount} more {extraCount === 1 ? 'story' : 'stories'}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

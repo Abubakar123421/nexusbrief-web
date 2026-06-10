@@ -242,7 +242,7 @@ export default function RegisterPage() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder=" "
                   required
-                  className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
+                  className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none focus:outline-none transition-all focus:border-ink/40 focus:ring-0 peer"
                 />
                 <label
                   htmlFor="register-name"
@@ -263,7 +263,7 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder=" "
                   required
-                  className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
+                  className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none focus:outline-none transition-all focus:border-ink/40 focus:ring-0 peer"
                 />
                 <label
                   htmlFor="register-email"
@@ -285,7 +285,7 @@ export default function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder=" "
                     required
-                    className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
+                    className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none focus:outline-none transition-all focus:border-ink/40 focus:ring-0 peer"
                   />
                   <label
                     htmlFor="register-password"
@@ -306,7 +306,7 @@ export default function RegisterPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder=" "
                     required
-                    className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
+                    className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none focus:outline-none transition-all focus:border-ink/40 focus:ring-0 peer"
                   />
                   <label
                     htmlFor="register-confirm-password"

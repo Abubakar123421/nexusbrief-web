@@ -183,7 +183,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder=" "
                 required
-                className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
+                className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none focus:outline-none transition-all focus:border-ink/40 focus:ring-0 peer"
               />
               <label
                 htmlFor="login-email"
@@ -204,7 +204,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder=" "
                 required
-                className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
+                className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none focus:outline-none transition-all focus:border-ink/40 focus:ring-0 peer"
               />
               <label
                 htmlFor="login-password"
