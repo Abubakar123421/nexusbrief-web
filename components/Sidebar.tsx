@@ -67,7 +67,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
         </p>
 
         {/* Nav items */}
-        <nav className="flex flex-col gap-1 px-4">
+        <nav className="flex flex-col gap-1 px-4 mb-8">
           {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
             const isActive = href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
 
@@ -87,20 +87,19 @@ export const Sidebar: React.FC<SidebarProps> = () => {
               </Link>
             );
           })}
-        </nav>
 
-        {/* Logout at bottom */}
-        <div className="mt-auto px-4 pb-8">
-          <div className="border-t border-ink/10 pt-4">
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 font-montserrat text-[10px] uppercase tracking-[0.15em] font-bold text-ink/60 hover:text-ink border border-transparent hover:border-ink/20 hover:bg-ink/5 transition-all cursor-pointer"
-            >
-              <LogOut size={14} strokeWidth={2} />
-              Sign Out
-            </button>
-          </div>
-        </div>
+          {/* Divider */}
+          <div className="my-2 border-t border-ink/10 mx-2" />
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-4 px-4 py-3 font-montserrat text-[11px] uppercase tracking-[0.1em] transition-all cursor-pointer group text-ink/60 hover:text-ink hover:bg-ink/5 font-semibold text-left w-full"
+          >
+            <LogOut size={16} strokeWidth={1.5} className="text-ink/50 group-hover:text-ink" />
+            Logout
+          </button>
+        </nav>
       </div>
     </aside>
   );
