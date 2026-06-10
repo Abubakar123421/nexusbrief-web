@@ -132,183 +132,123 @@ export default function LoginPage() {
       </div>
 
       {/* RIGHT PANEL */}
-      <div
-        className="w-full md:w-1/2 min-h-screen flex flex-col justify-center"
-        style={{
-          backgroundColor: '#FFF',
-          paddingLeft: '3rem',
-          paddingRight: '3rem',
-          paddingTop: '5rem',
-          paddingBottom: '5rem',
-        }}
-      >
-        <div style={{ maxWidth: '420px', width: '100%', margin: '0 auto' }}>
-          {/* Mobile logo */}
-          <div className="md:hidden mb-8">
-            <p
-              className="font-playfair font-bold"
-              style={{ fontSize: '1.25rem', color: '#0A0A0A' }}
-            >
+      <div className="w-full md:w-1/2 min-h-screen flex flex-col justify-center relative bg-[#F8F7F4] px-8 py-16 lg:px-16 lg:py-20 selection:bg-ink selection:text-white">
+        
+        {/* Subtle Paper Texture Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
+          style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
+        />
+
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          className="relative z-10 w-full max-w-[460px] mx-auto"
+        >
+          {/* Mobile logo & Top Rule */}
+          <div className="md:hidden mb-12 text-center">
+            <h2 className="font-playfair font-black text-2xl tracking-tight text-ink uppercase">
               NexusBrief
-            </p>
-            <hr style={{ borderColor: '#E0DDD8', marginTop: '1rem' }} />
+            </h2>
+            <div className="w-full h-px bg-ink/20 mt-4 mb-1" />
+            <div className="w-full h-0.5 bg-ink/40" />
           </div>
 
-          {/* Heading */}
-          <h1
-            className="font-playfair font-black"
-            style={{ fontSize: '36px', color: '#0A0A0A', lineHeight: 1.1 }}
-          >
-            Welcome back
-          </h1>
-          <p
-            className="font-garamond"
-            style={{
-              fontSize: '16px',
-              color: '#8A8A8A',
-              marginTop: '0.5rem',
-              marginBottom: '2.5rem',
-            }}
-          >
-            Sign in to your account
-          </p>
+          <div className="hidden md:block mb-10">
+            <div className="w-12 h-12 flex items-center justify-center border border-ink/20 rounded-full mb-6">
+              <span className="font-playfair italic text-2xl text-ink">N</span>
+            </div>
+          </div>
+
+          {/* Heading Section */}
+          <div className="mb-10">
+            <h1 className="font-playfair font-black text-[42px] leading-[1.1] text-ink tracking-tight mb-4">
+              Welcome back <br /> to The Digest.
+            </h1>
+            <p className="font-garamond text-[18px] text-ink/70 leading-relaxed max-w-[90%]">
+              Sign in to access your curated intelligence and personalized briefings.
+            </p>
+          </div>
 
           {/* Form */}
-          <form onSubmit={handleSignIn} noValidate>
+          <form onSubmit={handleSignIn} noValidate className="space-y-6">
             {/* Email */}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label
-                htmlFor="login-email"
-                className="font-montserrat uppercase block"
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.12em',
-                  color: '#8A8A8A',
-                  marginBottom: '0.375rem',
-                }}
-              >
-                Email
-              </label>
+            <div className="relative group">
               <input
                 id="login-email"
                 type="email"
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder=" "
                 required
-                className="font-garamond w-full transition-colors"
-                style={{
-                  border: '1px solid #E0DDD8',
-                  backgroundColor: '#FFF',
-                  padding: '0.875rem 1rem',
-                  fontSize: '15px',
-                  color: '#0A0A0A',
-                  outline: 'none',
-                }}
-                onFocus={(e) =>
-                  (e.currentTarget.style.borderColor = '#0A0A0A')
-                }
-                onBlur={(e) =>
-                  (e.currentTarget.style.borderColor = '#E0DDD8')
-                }
+                className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
               />
+              <label
+                htmlFor="login-email"
+                className="absolute left-0 font-montserrat text-[11px] uppercase tracking-[0.15em] text-ink/50 transition-all duration-300 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-ink peer-valid:-top-4 peer-valid:text-[9px]"
+                style={{ top: email ? '-16px' : '8px', fontSize: email ? '9px' : '11px', color: email ? '#0A0A0A' : 'rgba(10,10,10,0.5)' }}
+              >
+                Email Address
+              </label>
             </div>
 
             {/* Password */}
-            <div style={{ marginBottom: '0.5rem' }}>
-              <label
-                htmlFor="login-password"
-                className="font-montserrat uppercase block"
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.12em',
-                  color: '#8A8A8A',
-                  marginBottom: '0.375rem',
-                }}
-              >
-                Password
-              </label>
+            <div className="relative group pt-3">
               <input
                 id="login-password"
                 type="password"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder=" "
                 required
-                className="font-garamond w-full transition-colors"
-                style={{
-                  border: '1px solid #E0DDD8',
-                  backgroundColor: '#FFF',
-                  padding: '0.875rem 1rem',
-                  fontSize: '15px',
-                  color: '#0A0A0A',
-                  outline: 'none',
-                }}
-                onFocus={(e) =>
-                  (e.currentTarget.style.borderColor = '#0A0A0A')
-                }
-                onBlur={(e) =>
-                  (e.currentTarget.style.borderColor = '#E0DDD8')
-                }
+                className="block w-full font-garamond text-[18px] bg-transparent border-0 border-b border-ink/20 py-2 text-ink outline-none transition-all focus:border-ink focus:ring-0 peer"
               />
+              <label
+                htmlFor="login-password"
+                className="absolute left-0 font-montserrat text-[11px] uppercase tracking-[0.15em] text-ink/50 transition-all duration-300 peer-focus:top-0 peer-focus:text-[9px] peer-focus:text-ink peer-valid:top-0 peer-valid:text-[9px]"
+                style={{ top: password ? '0px' : '20px', fontSize: password ? '9px' : '11px', color: password ? '#0A0A0A' : 'rgba(10,10,10,0.5)' }}
+              >
+                Password
+              </label>
             </div>
 
             {/* Error */}
-            {error && (
-              <p
-                className="font-montserrat"
-                style={{
-                  fontSize: '12px',
-                  color: '#8C1F1F',
-                  marginTop: '0.5rem',
-                  marginBottom: '0.5rem',
-                }}
-              >
-                {error}
-              </p>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="font-garamond italic text-[15px] text-[#8C1F1F] pt-2"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
 
             {/* Sign In Button */}
-            <button
-              id="login-submit-btn"
-              type="submit"
-              disabled={isLoading}
-              className="font-montserrat uppercase font-semibold w-full transition-colors"
-              style={{
-                backgroundColor: '#0A0A0A',
-                color: '#FFF',
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                padding: '1rem',
-                marginTop: '0.5rem',
-                border: 'none',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                opacity: isLoading ? 0.75 : 1,
-              }}
-            >
-              {isLoading ? 'Signing in…' : 'Sign In'}
-            </button>
+            <div className="pt-6">
+              <button
+                id="login-submit-btn"
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-ink text-white font-montserrat text-[11px] uppercase tracking-[0.2em] py-4 border border-ink transition-all duration-300 hover:bg-transparent hover:text-ink disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? 'Processing...' : 'Sign In'}
+              </button>
+            </div>
           </form>
 
           {/* Divider */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              margin: '1.5rem 0',
-            }}
-          >
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#E0DDD8' }} />
-            <span
-              className="font-montserrat uppercase"
-              style={{ fontSize: '10px', letterSpacing: '0.15em', color: '#8A8A8A' }}
-            >
+          <div className="flex items-center gap-4 my-8">
+            <div className="flex-1 h-px bg-ink/10" />
+            <span className="font-playfair italic text-[14px] text-ink/50">
               or
             </span>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#E0DDD8' }} />
+            <div className="flex-1 h-px bg-ink/10" />
           </div>
 
           {/* Google Button */}
@@ -316,59 +256,25 @@ export default function LoginPage() {
             id="login-google-btn"
             type="button"
             onClick={handleGoogleSignIn}
-            className="font-montserrat uppercase w-full flex items-center justify-center gap-3 transition-colors"
-            style={{
-              border: '1px solid #E0DDD8',
-              backgroundColor: 'transparent',
-              color: '#0A0A0A',
-              fontSize: '12px',
-              letterSpacing: '0.12em',
-              padding: '1rem',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = '#F8F7F4')
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = 'transparent')
-            }
+            className="w-full flex items-center justify-center gap-3 bg-transparent border border-ink/20 py-3.5 font-montserrat text-[11px] uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:border-ink hover:bg-ink/5"
           >
-            {/* Google SVG */}
-            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-              <path
-                fill="#4285F4"
-                d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
-              />
-              <path
-                fill="#34A853"
-                d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
-              />
-              <path
-                fill="#EA4335"
-                d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
-              />
-            </svg>
             Continue with Google
           </button>
 
           {/* Register Link */}
-          <p
-            className="font-garamond text-center"
-            style={{ fontSize: '15px', color: '#8A8A8A', marginTop: '2rem' }}
-          >
-            Don&apos;t have an account?{' '}
-            <Link
-              href="/auth/register"
-              style={{ color: '#0A0A0A', textDecoration: 'underline' }}
-            >
-              Create one →
-            </Link>
-          </p>
-        </div>
+          <div className="mt-12 pt-8 border-t border-ink/10 text-center">
+            <p className="font-garamond text-[17px] text-ink/60">
+              Don&apos;t have an account?{' '}
+              <Link
+                href="/auth/register"
+                className="text-ink hover:text-ink/70 underline underline-offset-4 decoration-1 decoration-ink/30 hover:decoration-ink transition-all"
+              >
+                Subscribe
+              </Link>
+            </p>
+          </div>
+
+        </motion.div>
       </div>
     </div>
   );
