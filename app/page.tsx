@@ -95,26 +95,23 @@ export default function LandingPage() {
           className="absolute inset-0 pointer-events-none opacity-[0.35] mix-blend-multiply z-0"
           style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
         />
-        
-        {/* Gentle Ambient Lighting Gradient */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/60 via-transparent to-transparent opacity-80 pointer-events-none blur-3xl z-0" />
 
         {/* Editorial Micro-elements */}
-        <div className="absolute top-8 left-8 hidden md:flex flex-col gap-1 z-10">
-          <div className="w-16 h-px bg-ink/20" />
-          <span className="font-montserrat text-[8px] uppercase tracking-[0.3em] text-ink/40">Edition: {new Date().getFullYear()}</span>
+        <div className="absolute top-8 left-8 hidden md:flex flex-col gap-1 z-10 opacity-40">
+          <div className="w-16 h-px bg-ink" />
+          <span className="font-montserrat text-[8px] uppercase tracking-[0.3em] text-ink">Edition: {new Date().getFullYear()}</span>
         </div>
-        <div className="absolute top-8 right-8 hidden md:block z-10">
-          <div className="w-8 h-8 rounded-full border border-ink/10 flex items-center justify-center">
-            <span className="font-playfair italic text-ink/40 text-[12px]">N</span>
+        <div className="absolute top-8 right-8 hidden md:block z-10 opacity-40">
+          <div className="w-8 h-8 rounded-full border border-ink flex items-center justify-center">
+            <span className="font-playfair italic text-ink text-[12px]">N</span>
           </div>
         </div>
 
         {/* Slow-moving newswire accent */}
-        <div className="absolute left-0 w-full overflow-hidden top-24 opacity-40 z-0">
+        <div className="absolute left-0 w-full overflow-hidden top-24 opacity-20 z-0">
           <div className="flex w-[200%] animate-scrollHorizontal">
             {[...Array(6)].map((_, i) => (
-              <span key={i} className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink/20 whitespace-nowrap px-8">
+              <span key={i} className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink whitespace-nowrap px-8">
                 • THE WORLD'S BEST JOURNALISM CURATED FOR YOU • INTELLECTUAL PURSUITS 
               </span>
             ))}
@@ -122,7 +119,7 @@ export default function LandingPage() {
         </div>
 
         <div className="relative max-w-content mx-auto text-center z-10">
-          <p className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink/50 mb-6 font-semibold">
+          <p className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink opacity-50 mb-6 font-semibold">
             Get Started
           </p>
           <h2
@@ -131,9 +128,9 @@ export default function LandingPage() {
           >
             Your digest,
             <br />
-            <em className="italic font-light text-ink/80">starts today.</em>
+            <em className="italic font-light text-ink opacity-80">starts today.</em>
           </h2>
-          <p className="font-garamond text-[19px] text-ink/60 mt-8 mb-12 max-w-md mx-auto leading-relaxed">
+          <p className="font-garamond text-[19px] text-ink opacity-60 mt-8 mb-12 max-w-md mx-auto leading-relaxed">
             Free to use. Takes 60 seconds to set up. Your first digest is waiting.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -146,16 +143,13 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/auth/login"
-              className="group font-montserrat text-[11px] uppercase tracking-[0.15em] text-ink/60 hover:text-ink transition-colors duration-300 flex items-center gap-2"
+              className="group font-montserrat text-[11px] uppercase tracking-[0.15em] text-ink opacity-60 hover:opacity-100 transition-opacity duration-300 flex items-center gap-2"
             >
               Already have an account 
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
             </Link>
           </div>
         </div>
-        
-        {/* Soft transition into footer */}
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-b from-transparent to-[#050505] z-20 pointer-events-none" />
       </section>
 
       {/* ── FOOTER ────────────────────────────────────────────── */}
