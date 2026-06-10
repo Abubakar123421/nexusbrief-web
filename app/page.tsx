@@ -2,6 +2,8 @@ import HeroScrollVideo from '@/components/HeroScrollVideo';
 import HowItWorks from '@/components/HowItWorks';
 import NewsTicker from '@/components/NewsTicker';
 import SampleDigest from '@/components/SampleDigest';
+import DataFlowVisualization from '@/components/DataFlowVisualization';
+import ClippingStack from '@/components/ClippingStack';
 import Link from 'next/link';
 
 const FEATURES = [
@@ -41,9 +43,9 @@ export default function LandingPage() {
       {/* ── FEATURE HIGHLIGHTS ────────────────────────────────── */}
       <section className="bg-background py-28 px-6 border-t border-border">
         <div className="max-w-content mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1.5fr] gap-12 lg:gap-16 items-start relative">
             {/* Left — editorial headline */}
-            <div className="lg:sticky lg:top-24">
+            <div className="lg:sticky lg:top-24 z-10">
               <p className="font-montserrat text-[10px] uppercase tracking-[0.3em] text-ink-muted mb-6">
                 Why NexusBrief
               </p>
@@ -70,25 +72,14 @@ export default function LandingPage() {
               </Link>
             </div>
 
-            {/* Right — feature list */}
-            <div className="flex flex-col divide-y divide-border border border-border">
-              {FEATURES.map((feat) => (
-                <div key={feat.number} className="p-8 group hover:bg-surface transition-colors">
-                  <div className="flex items-start gap-5">
-                    <span className="font-montserrat text-[11px] font-semibold text-ink-muted uppercase tracking-widest mt-1 w-6 shrink-0">
-                      {feat.number}
-                    </span>
-                    <div>
-                      <h4 className="font-playfair text-[21px] font-bold text-ink mb-2">
-                        {feat.headline}
-                      </h4>
-                      <p className="font-garamond text-[15px] text-ink-secondary leading-relaxed">
-                        {feat.body}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {/* Center — editorial data flow visualization */}
+            <div className="hidden lg:block h-full">
+              <DataFlowVisualization />
+            </div>
+
+            {/* Right — clipping stack */}
+            <div className="relative z-10">
+              <ClippingStack />
             </div>
           </div>
         </div>
