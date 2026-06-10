@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Montserrat:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-playfair: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-montserrat: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-garamond: 'EB Garamond', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  font-family: var(--font-garamond);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #F8F7F4; }
+::-webkit-scrollbar-thumb { background: #1A1A1A; }
+
+/* Selection */
+::selection { background-color: #0A0A0A; color: #FFFFFF; }
+
+/* Horizontal rule */
+hr { border: none; border-top: 1px solid #E0DDD8; }
+
+/* Focus outline */
+*:focus-visible { outline: 2px solid #0A0A0A; outline-offset: 2px; }
