@@ -21,11 +21,7 @@ const SETTINGS_CARDS: SettingCard[] = [
     title: 'Prioritization Mode',
     description: 'Control how your top 5 articles are ranked.',
   },
-  {
-    href: '/dashboard/settings/sources',
-    title: 'News Sources',
-    description: 'Select which outlets feed your digest.',
-  },
+
   {
     href: '/dashboard/settings/schedule',
     title: 'Delivery Schedule',
