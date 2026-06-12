@@ -41,46 +41,64 @@ const SETTINGS_CARDS: SettingCard[] = [
 
 export default function SettingsPage() {
   return (
-    <div className="min-h-screen bg-[#FFFFFF] flex flex-col">
-      <Topbar title="Settings" />
-      <main className="flex-1 overflow-y-auto px-8 py-8 max-w-6xl mx-auto w-full">
-        {/* Page Header */}
-        <div className="mb-8">
-          <p className="font-montserrat text-[10px] uppercase tracking-widest text-[#8A8A8A] mb-1">
-            CONFIGURATION
-          </p>
-          <h1 className="font-playfair font-black text-[36px] text-[#0A0A0A] leading-tight">
-            Settings
-          </h1>
-          <p className="font-garamond text-[#8A8A8A] text-[16px] mt-1">
-            Customize your NexusBrief experience.
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#FDFCFA] flex flex-col relative">
+      {/* Subtle global paper noise overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none mix-blend-multiply opacity-[0.015] z-0"
+        style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")', backgroundAttachment: 'fixed' }}
+      />
 
-        {/* Settings Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-16">
-          {SETTINGS_CARDS.map((card) => (
-            <Link key={card.href} href={card.href}>
-              <div className="border border-[#E0DDD8] p-7 hover:bg-[#F8F7F4] transition-colors cursor-pointer group flex flex-col h-full min-h-[140px] relative">
-                {/* Arrow icon — shown on hover */}
-                <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ChevronRight
-                    size={18}
-                    className="text-[#3D3D3D]"
-                    strokeWidth={1.5}
-                  />
-                </div>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Topbar title="Settings" />
+        <main className="flex-1 overflow-y-auto px-8 py-12 max-w-6xl mx-auto w-full">
+          {/* Page Header */}
+          <div className="mb-10">
+            <p className="font-montserrat text-[10px] uppercase tracking-widest text-[#8A8A8A] mb-1">
+              CONFIGURATION
+            </p>
+            <h1 className="font-playfair font-black text-[36px] text-[#0A0A0A] leading-tight">
+              Settings
+            </h1>
+            <p className="font-garamond text-[#8A8A8A] text-[16px] mt-1">
+              Customize your NexusBrief experience.
+            </p>
+          </div>
 
-                <h2 className="font-playfair font-bold text-[19px] text-[#0A0A0A] pr-6 leading-snug">
-                  {card.title}
-                </h2>
-                <p className="font-garamond text-[14px] text-[#8A8A8A] mt-2 leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
+          {/* Settings Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-16">
+            {SETTINGS_CARDS.map((card, idx) => {
+              const indexNumber = String(idx + 1).padStart(2, '0');
+              return (
+                <Link key={card.href} href={card.href}>
+                  <div className="bg-[#fcfcfb] border border-[#000000]/[0.08] p-8 transition-all duration-300 cursor-pointer group flex flex-col h-full min-h-[160px] relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_8px_30px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#000000]/[0.15]">
+                    {/* Arrow icon — shown on hover */}
+                    <div className="absolute top-8 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ChevronRight
+                        size={18}
+                        className="text-[#3D3D3D]"
+                        strokeWidth={1.5}
+                      />
+                    </div>
+
+                    {/* Editorial Number */}
+                    <div className="mb-5">
+                      <span className="font-montserrat text-[11px] uppercase tracking-[0.25em] text-[#8A8A8A]/60 font-semibold group-hover:text-[#8A8A8A] transition-colors duration-300 block">
+                        {indexNumber}
+                      </span>
+                      <div className="w-8 h-[1px] bg-[#000000]/[0.08] mt-2 group-hover:bg-[#000000]/[0.15] transition-colors duration-300" />
+                    </div>
+
+                    <h2 className="font-playfair font-bold text-[19px] text-[#0A0A0A] pr-6 leading-snug">
+                      {card.title}
+                    </h2>
+                    <p className="font-garamond text-[15px] text-[#8A8A8A] mt-2 leading-relaxed">
+                      {card.description}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
 
         {/* Editorial Summary Panel */}
         <div className="mt-16 max-w-3xl mx-auto relative animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
