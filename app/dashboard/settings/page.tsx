@@ -96,7 +96,11 @@ export default function SettingsPage() {
 
       let servicesStr = 'None';
       try {
-        const res = await fetch('/api/classroom/assignments');
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.provider_token;
+        const res = await fetch('/api/classroom/assignments', {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
         if (res.ok) {
           servicesStr = 'Google Classroom';
         }

@@ -3,13 +3,20 @@ import { createRouteSupabaseClient } from '@/lib/supabase/route';
 
 const CLASSROOM_BASE = 'https://classroom.googleapis.com/v1';
 
-export async function GET() {
+export async function GET(req: Request) {
   const supabase = await createRouteSupabaseClient();
   const { data: { session } } = await supabase.auth.getSession();
 
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const token = session.provider_token;
+  let token = session.provider_token;
+  if (!token) {
+    const authHeader = req.headers.get('authorization');
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.split(' ')[1];
+    }
+  }
+
   if (!token) return NextResponse.json({ error: 'No Google token — sign in with Google' }, { status: 401 });
 
   try {
