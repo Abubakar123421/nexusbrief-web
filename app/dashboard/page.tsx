@@ -11,18 +11,16 @@ import Topbar from '@/components/Topbar';
 export interface DigestItem {
   id: string;
   digest_id: string;
-  article_url: string;
-  article_title: string;
-  article_source: string;
-  article_summary: string;
-  article_category: string;
-  article_published_at: string | null;
-  article_image_url: string | null;
-  relevance_score: number | null;
-  user_rating: 'THUMBS_UP' | 'THUMBS_DOWN' | null;
+  headline: string;
+  summary: string;
+  source_url: string;
+  thumbnail_url: string | null;
+  published_at: string | null;
+  item_rank: number | null;
   is_bookmarked: boolean;
+  is_exported: boolean;
+  user_rating: 'THUMBS_UP' | 'THUMBS_DOWN' | null;
   bookmark_date: string | null;
-  rank_position: number | null;
 }
 
 interface Digest {
@@ -161,12 +159,12 @@ export default function DashboardPage() {
         return;
       }
 
-      // Sort items by rank_position ascending
+      // Sort items by item_rank ascending
       const sorted = {
         ...data,
         digest_items: [...(data.digest_items ?? [])].sort(
           (a: DigestItem, b: DigestItem) =>
-            (a.rank_position ?? 999) - (b.rank_position ?? 999)
+            (a.item_rank ?? 999) - (b.item_rank ?? 999)
         ),
       } as Digest;
 

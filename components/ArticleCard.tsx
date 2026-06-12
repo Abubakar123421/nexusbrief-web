@@ -12,8 +12,8 @@ interface BriefItem {
   summary: string;
   source_url: string;
   thumbnail_url?: string | null;
-  published_at: string;
-  item_rank: number;
+  published_at: string | null;
+  item_rank: number | null;
   is_bookmarked: boolean;
   is_exported: boolean;
 }
