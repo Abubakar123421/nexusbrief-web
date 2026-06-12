@@ -135,7 +135,7 @@ export default function BookmarksPage() {
                 >
                   {/* Thumbnail */}
                   {item.thumbnail_url && (
-                    <div className="w-full h-40 overflow-hidden -mx-6 -mt-6 mb-4">
+                    <div className="h-40 overflow-hidden -mx-6 -mt-6 mb-4">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.thumbnail_url}
