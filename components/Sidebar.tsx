@@ -10,6 +10,7 @@ import {
   Settings,
   User,
   LogOut,
+  GraduationCap,
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase/client';
 
@@ -23,6 +24,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: Home },
   { label: 'History', href: '/dashboard/history', icon: Clock },
   { label: 'Bookmarks', href: '/dashboard/bookmarks', icon: Bookmark },
+  { label: 'Classroom', href: '/dashboard/settings/classroom', icon: GraduationCap },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings },
   { label: 'Profile', href: '/dashboard/profile', icon: User },
 ];
