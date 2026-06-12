@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase/client';
 import ArticleCard from '@/components/ArticleCard';
 import ClassroomWidget from '@/components/ClassroomWidget';
+import Topbar from '@/components/Topbar';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -315,46 +316,34 @@ export default function DashboardPage() {
   return (
     <main className="flex-1 overflow-y-auto" style={{ minWidth: 0 }}>
       {/* ── Top section ──────────────────────────────────────────────────── */}
-      <div className="px-8 md:px-16 py-12 border-b border-ink/10 relative overflow-hidden bg-[#F8F7F4]">
+      <Topbar title="Dashboard" />
+      
+      {/* ── Sub-header Actions (Welcome, Refresh, Generate) ──────────────── */}
+      <div className="px-8 md:px-16 py-8 border-b border-ink/10 bg-[#FDFCFA] flex flex-col md:flex-row md:items-end justify-between gap-8 relative overflow-hidden">
         {/* Paper texture */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.35] mix-blend-multiply z-0"
+          className="absolute inset-0 pointer-events-none opacity-[0.2] mix-blend-multiply z-0"
           style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
         />
-        
-        {/* Banner Graphic */}
-        <div className="w-full h-48 md:h-64 mb-12 relative border border-ink/20 overflow-hidden group">
-          <img 
-            src="/dashboard-banner.png" 
-            alt="Editorial Engraving" 
-            className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-multiply grayscale group-hover:scale-105 transition-transform duration-1000"
-          />
-          <div className="absolute inset-0 bg-ink/5 mix-blend-overlay" />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="bg-[#F8F7F4]/90 backdrop-blur-sm px-10 py-4 border border-ink/20 shadow-sm">
-              <span className="font-playfair italic text-ink text-2xl md:text-3xl tracking-tight">Today's Edition</span>
-            </div>
-          </div>
+
+        {/* Welcome */}
+        <div className="relative z-10">
+          <p className="font-montserrat text-[10px] uppercase tracking-[0.25em] text-ink/50 mb-2 font-semibold">
+            Personalized for
+          </p>
+          <h1 className="font-playfair font-black text-ink text-4xl leading-[1.1] tracking-tight">
+            {user?.name ?? 'Reader'}
+          </h1>
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
-          {/* Welcome */}
-          <div>
-            <p className="font-montserrat text-[10px] uppercase tracking-[0.25em] text-ink/50 mb-2 font-semibold">
-              Personalized for
-            </p>
-            <h1 className="font-playfair font-black text-ink text-4xl md:text-5xl leading-[1.1] tracking-tight">
-              {user?.name ?? 'Reader'}
-            </h1>
-          </div>
-
-          {/* Action buttons */}
+        {/* Action buttons & Digest meta */}
+        <div className="relative z-10 flex flex-col items-start md:items-end gap-4">
           <div className="flex gap-4 items-center">
             {/* Refresh */}
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="group font-montserrat uppercase text-[10px] tracking-[0.2em] px-5 py-3.5 border border-ink/20 hover:border-ink/60 text-ink/70 hover:text-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-transparent font-semibold"
+              className="group font-montserrat uppercase text-[10px] tracking-[0.2em] px-5 py-3 border border-ink/20 hover:border-ink/60 text-ink/70 hover:text-ink transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bg-transparent font-semibold"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:rotate-180 transition-transform duration-500">
                 <polyline points="23 4 23 10 17 10" />
@@ -368,7 +357,7 @@ export default function DashboardPage() {
             <button
               onClick={onGenerate}
               disabled={isGenerating}
-              className="font-montserrat uppercase font-semibold text-[11px] tracking-[0.2em] bg-ink text-white px-8 py-3.5 border border-ink hover:bg-transparent hover:text-ink transition-colors disabled:opacity-75 disabled:cursor-not-allowed flex items-center gap-2"
+              className="font-montserrat uppercase font-semibold text-[10px] tracking-[0.2em] bg-ink text-white px-6 py-3 border border-ink hover:bg-transparent hover:text-ink transition-colors disabled:opacity-75 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {isGenerating ? (
                 <><SpinnerIcon /> Typesetting...</>
@@ -377,22 +366,17 @@ export default function DashboardPage() {
               )}
             </button>
           </div>
-        </div>
 
-        {/* Digest meta */}
-        {digest && (
-          <div className="relative z-10 mt-8 pt-6 border-t border-ink/10 flex flex-wrap items-center gap-6">
-            <span className="font-montserrat text-[10px] uppercase tracking-[0.15em] text-ink/40 font-semibold">
-              Generated <span className="text-ink ml-1">{formatDate(digest.generated_at)}</span>
-            </span>
-            <div className="w-1 h-1 bg-ink/20 rounded-full" />
-            <span className="font-montserrat text-[10px] uppercase tracking-[0.15em] text-ink/40 font-semibold">
-              Status <span className="text-ink ml-1 uppercase">{digest.status}</span>
-            </span>
-            <div className="w-1 h-1 bg-ink/20 rounded-full" />
-            <StatusBadge isViewed={digest.is_viewed} />
-          </div>
-        )}
+          {digest && (
+            <div className="flex flex-wrap items-center gap-4 mt-2">
+              <span className="font-montserrat text-[9px] uppercase tracking-[0.15em] text-ink/40 font-semibold">
+                Generated <span className="text-ink ml-1">{formatDate(digest.generated_at)}</span>
+              </span>
+              <div className="w-1 h-1 bg-ink/20 rounded-full" />
+              <StatusBadge isViewed={digest.is_viewed} />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ── Classroom widget ──────────────────────────────────────────────── */}
