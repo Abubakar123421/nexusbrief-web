@@ -82,21 +82,21 @@ export default function ClassroomPage() {
   const [assignments,  setAssignments]  = useState<Assignment[]>([]);
   const [isLoading,    setIsLoading]    = useState(true);
   const [error,        setError]        = useState<string | null>(null);
+  const [debugInfo,    setDebugInfo]    = useState<string>('');
 
-  // ── Check connection & fetch assignments ───────────────────────────────────
-  const fetchAssignments = useCallback(async () => {
+  // ── Fetch with a specific token (called immediately after auth) ─────────────
+  const fetchWithToken = useCallback(async (token: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.provider_token;
-
       const res = await fetch('/api/classroom/assignments', {
-        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        headers: { 'Authorization': `Bearer ${token}` },
       });
+      
       if (res.status === 401 || res.status === 403) {
+        const body = await res.json();
+        setError(body.error ?? 'Not authorized for Classroom. Make sure Google Classroom API is enabled.');
         setIsConnected(false);
-        setIsLoading(false);
         return;
       }
       if (!res.ok) {
@@ -106,6 +106,9 @@ export default function ClassroomPage() {
       const data = await res.json();
       setAssignments(data.assignments ?? []);
       setIsConnected(true);
+
+      // Persist the token in localStorage so it survives page refreshes
+      localStorage.setItem('gclassroom_token', token);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Unknown error');
       setIsConnected(false);
@@ -114,10 +117,48 @@ export default function ClassroomPage() {
     }
   }, []);
 
-  useEffect(() => { fetchAssignments(); }, [fetchAssignments]);
+  // ── On mount: check localStorage for saved token or try session ────────────
+  useEffect(() => {
+    async function init() {
+      // 1) Try a previously saved token from localStorage
+      const savedToken = localStorage.getItem('gclassroom_token');
+      if (savedToken) {
+        await fetchWithToken(savedToken);
+        return;
+      }
+
+      // 2) Try the current session's provider_token (available right after OAuth)
+      const { data: { session } } = await supabase.auth.getSession();
+      setDebugInfo(`Session exists: ${!!session}, provider_token: ${!!session?.provider_token}`);
+      
+      if (session?.provider_token) {
+        await fetchWithToken(session.provider_token);
+        return;
+      }
+
+      // 3) No token available
+      setIsConnected(false);
+      setIsLoading(false);
+    }
+
+    init();
+  }, [supabase, fetchWithToken]);
+
+  // ── Listen for auth state changes (fires when OAuth redirect returns) ───────
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.provider_token) {
+        await fetchWithToken(session.provider_token);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [supabase, fetchWithToken]);
 
   // ── Connect with Google ────────────────────────────────────────────────────
   const handleConnect = async () => {
+    // Clear any stale saved token
+    localStorage.removeItem('gclassroom_token');
+    
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -132,6 +173,14 @@ export default function ClassroomPage() {
         queryParams: { access_type: 'offline', prompt: 'consent' },
       },
     });
+  };
+
+  // ── Disconnect ────────────────────────────────────────────────────────────
+  const handleDisconnect = () => {
+    localStorage.removeItem('gclassroom_token');
+    setIsConnected(false);
+    setAssignments([]);
+    setError(null);
   };
 
   // ─── Render ────────────────────────────────────────────────────────────────
@@ -151,20 +200,31 @@ export default function ClassroomPage() {
             </div>
 
             <div className="border border-border p-8 flex flex-col items-center text-center">
-              <span className="text-[64px] mb-6" role="img" aria-label="Classroom">
-                📚
-              </span>
+              <div className="w-16 h-16 border border-ink/20 flex items-center justify-center mb-6 bg-[#F8F7F4]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-ink/60">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+              </div>
               <h2 className="font-playfair font-black text-[28px] text-ink">
                 Google Classroom
               </h2>
               <p className="font-garamond text-[16px] text-ink-muted mt-4 max-w-sm">
-                Connect your Google account to view upcoming assignments.
+                Connect your Google account to view upcoming assignments alongside your daily digest.
               </p>
 
               {error && (
-                <div className="mt-4 px-4 py-3 border border-danger text-danger bg-danger/5 font-garamond text-[13px] w-full text-left">
+                <div className="mt-4 px-4 py-3 border border-[#CC0000]/30 text-[#CC0000] bg-[#CC0000]/5 font-garamond text-[13px] w-full text-left">
                   {error}
+                  {error.includes('Classroom') && (
+                    <p className="mt-2 text-[12px]">
+                      Make sure <strong>Google Classroom API</strong> is enabled in your Google Cloud Console under APIs &amp; Services → Library.
+                    </p>
+                  )}
                 </div>
+              )}
+
+              {process.env.NODE_ENV === 'development' && debugInfo && (
+                <p className="mt-2 font-montserrat text-[10px] text-ink/40">{debugInfo}</p>
               )}
 
               <button
@@ -175,7 +235,7 @@ export default function ClassroomPage() {
               </button>
 
               <p className="font-montserrat text-[11px] text-ink-muted mt-4">
-                Requires signing in with Google and granting Classroom access.
+                Requires granting Google Classroom read access.
               </p>
             </div>
           </>
@@ -184,18 +244,34 @@ export default function ClassroomPage() {
         {/* ── CONNECTED ── */}
         {isConnected && (
           <>
-            <div className="mb-10 border-b border-border pb-8">
-              <h1 className="font-playfair font-black text-[32px] text-ink leading-tight">
-                Upcoming Assignments
-              </h1>
+            <div className="mb-10 border-b border-border pb-8 flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="font-montserrat text-[9px] uppercase tracking-widest text-green-700 bg-green-50 border border-green-200 px-2 py-0.5">
+                    Connected
+                  </span>
+                </div>
+                <h1 className="font-playfair font-black text-[32px] text-ink leading-tight">
+                  Upcoming Assignments
+                </h1>
+              </div>
+              <button
+                onClick={handleDisconnect}
+                className="font-montserrat text-[10px] uppercase tracking-widest text-ink/40 hover:text-ink/80 transition-colors mt-2"
+              >
+                Disconnect
+              </button>
             </div>
 
             {isLoading ? (
               <AssignmentSkeleton />
             ) : assignments.length === 0 ? (
-              <div className="text-center py-16">
+              <div className="text-center py-16 border border-border">
                 <p className="font-playfair italic text-[20px] text-ink-muted">
-                  🎉 No upcoming assignments!
+                  No upcoming assignments found.
+                </p>
+                <p className="font-garamond text-[14px] text-ink-muted mt-2">
+                  You&apos;re all caught up!
                 </p>
               </div>
             ) : (
@@ -207,32 +283,28 @@ export default function ClassroomPage() {
                       key={`${a.courseId}-${idx}`}
                       className="border border-border p-5 mb-3 hover:bg-surface transition-colors"
                     >
-                      {/* Course name */}
                       <p className="font-montserrat text-[9px] uppercase tracking-widest text-ink-muted">
                         {a.courseName}
                       </p>
-
-                      {/* Title */}
                       <p className="font-playfair font-bold text-[18px] text-ink mt-1">
                         {a.title}
                       </p>
 
-                      {/* Due date */}
                       {a.dueDate && (
                         <div className="mt-3">
                           {status === 'overdue' && (
-                            <span className="inline-block bg-danger/10 text-danger border-l-4 border-danger pl-3 py-1 font-garamond text-[13px]">
-                              ⚠️ OVERDUE: {formatDueDate(a.dueDate)}
+                            <span className="inline-block bg-red-50 text-red-700 border-l-4 border-red-500 pl-3 py-1 font-garamond text-[13px]">
+                              ⚠ OVERDUE: {formatDueDate(a.dueDate)}
                             </span>
                           )}
                           {status === 'urgent' && (
-                            <span className="font-garamond text-[13px] text-danger">
-                              🔴 Due: {formatDueDate(a.dueDate)}
+                            <span className="font-garamond text-[13px] text-red-700">
+                              Due soon: {formatDueDate(a.dueDate)}
                             </span>
                           )}
                           {status === 'normal' && (
                             <span className="font-garamond text-[13px] text-ink-muted">
-                              📅 Due: {formatDueDate(a.dueDate)}
+                              Due: {formatDueDate(a.dueDate)}
                             </span>
                           )}
                         </div>
@@ -244,7 +316,6 @@ export default function ClassroomPage() {
                         </p>
                       )}
 
-                      {/* Link */}
                       {a.link && (
                         <a
                           href={a.link}

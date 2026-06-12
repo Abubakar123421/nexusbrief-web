@@ -85,7 +85,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           <div className="mt-auto font-montserrat text-[10px] uppercase tracking-widest text-ink/50 flex items-center gap-3 font-semibold">
             <span>{relativeTime}</span>
             <span className="text-ink/30">&bull;</span>
-            <span>{readTime} MIN READ</span>
+            <span>{readTime}</span>
           </div>
         </div>
 
