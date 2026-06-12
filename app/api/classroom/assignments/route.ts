@@ -11,6 +11,13 @@ export async function GET(req: Request) {
 
   let token = session.provider_token;
   if (!token) {
+    const cookieToken = req.headers.get('cookie')?.split('; ')?.find(c => c.startsWith('google_provider_token='))?.split('=')[1];
+    if (cookieToken) {
+      token = decodeURIComponent(cookieToken);
+    }
+  }
+
+  if (!token) {
     const authHeader = req.headers.get('authorization');
     if (authHeader && authHeader.startsWith('Bearer ')) {
       token = authHeader.split(' ')[1];

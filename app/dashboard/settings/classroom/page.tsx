@@ -128,7 +128,7 @@ export default function ClassroomPage() {
           'https://www.googleapis.com/auth/classroom.courses.readonly',
           'https://www.googleapis.com/auth/classroom.coursework.me.readonly',
         ].join(' '),
-        redirectTo: `${window.location.origin}/dashboard/settings/classroom`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/dashboard/settings/classroom`,
         queryParams: { access_type: 'offline', prompt: 'consent' },
       },
     });
