@@ -6,8 +6,8 @@ import Topbar from '@/components/Topbar';
 
 interface DigestItem {
   id: string;
-  article_title: string;
-  rank_position: number;
+  headline: string;
+  item_rank: number;
 }
 
 interface Digest {
@@ -51,7 +51,7 @@ export default function HistoryPage() {
 
       const { data } = await supabase
         .from('digests')
-        .select('*, digest_items(id, article_title, rank_position)')
+        .select('*, digest_items(id, headline, item_rank)')
         .eq('user_id', user.id)
         .order('generated_at', { ascending: false });
 
@@ -137,7 +137,7 @@ export default function HistoryPage() {
             <div className="grid grid-cols-1 gap-12">
               {filtered.map((digest) => {
                 const items = [...(digest.digest_items ?? [])].sort(
-                  (a, b) => a.rank_position - b.rank_position
+                  (a, b) => a.item_rank - b.item_rank
                 );
                 const visibleItems = items.slice(0, 4);
                 const extraCount = items.length - 4;
@@ -173,9 +173,9 @@ export default function HistoryPage() {
                           <div key={item.id} className="group/item">
                             <h3 className="font-garamond text-xl text-ink leading-snug group-hover/item:text-ink/60 transition-colors">
                               <span className="font-montserrat text-[10px] uppercase font-bold tracking-widest text-ink/40 mr-3 align-middle">
-                                No. {item.rank_position}
+                                No. {item.item_rank}
                               </span>
-                              {item.article_title}
+                              {item.headline}
                             </h3>
                           </div>
                         ))}
