@@ -106,7 +106,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       </div>
 
       {/* Action bar */}
-      <div className="relative z-10 flex items-center gap-4 mt-6 pt-6 border-t border-ink/10">
+      <div className="relative z-10 flex flex-wrap items-center gap-4 mt-6 pt-6 border-t border-ink/10">
         <Button variant="ghost" size="sm" onClick={onLike} className="group/btn flex items-center gap-2 !px-3 !py-2 hover:bg-ink/5 rounded-none">
           <ThumbsUp size={16} strokeWidth={1.5} className="text-ink/70 group-hover/btn:text-ink" />
         </Button>

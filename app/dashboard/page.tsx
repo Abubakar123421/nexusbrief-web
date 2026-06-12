@@ -317,7 +317,7 @@ export default function DashboardPage() {
       <Topbar title="Dashboard" />
       
       {/* ── Sub-header Actions (Welcome, Refresh, Generate) ──────────────── */}
-      <div className="px-8 md:px-16 py-8 border-b border-ink/10 bg-[#FDFCFA] flex flex-col md:flex-row md:items-end justify-between gap-8 relative overflow-hidden">
+      <div className="px-4 sm:px-8 md:px-16 py-8 border-b border-ink/10 bg-[#FDFCFA] flex flex-col md:flex-row md:items-end justify-between gap-8 relative overflow-hidden">
         {/* Paper texture */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-[0.2] mix-blend-multiply z-0"
@@ -391,7 +391,7 @@ export default function DashboardPage() {
       )}
 
       {/* ── Articles ──────────────────────────────────────────────────────── */}
-      <div className="px-8 md:px-16 py-12 max-w-[1200px] mx-auto bg-white min-h-screen">
+      <div className="px-4 sm:px-8 md:px-16 py-12 max-w-[1200px] mx-auto bg-white min-h-screen">
         {isLoading && <LoadingState />}
 
         {!isLoading && (!digest || digest.digest_items.length === 0) && (

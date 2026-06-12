@@ -165,7 +165,7 @@ export default function LandingPage() {
             </p>
             <div className="w-12 h-px bg-white/10 mt-6" />
           </div>
-          <div className="flex gap-16">
+          <div className="flex flex-wrap gap-8 sm:gap-16">
             <div>
               <p className="font-montserrat text-[9px] uppercase tracking-[0.25em] text-white/30 mb-5 font-semibold">
                 Product

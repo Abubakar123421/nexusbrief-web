@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   };
 
   return (
-    <aside className="w-64 bg-[#FDFCFA] border-r border-ink/10 flex flex-col min-h-screen relative shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+    <aside className="hidden md:flex w-64 bg-[#FDFCFA] border-r border-ink/10 flex-col min-h-screen relative shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
       {/* Decorative texture */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-[0.3] mix-blend-multiply z-0"
