@@ -52,7 +52,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")' }}
       />
 
-      <div className="relative z-10 flex flex-col md:flex-row gap-8">
+      <div className="relative z-10 flex flex-col-reverse md:flex-row gap-8">
         {/* Left: Content */}
         <div className="flex-1 min-w-0 flex flex-col">
           <div className="flex items-center gap-3 mb-4">
